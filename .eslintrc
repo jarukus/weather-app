@@ -1,0 +1,14 @@
+{
+	"env": {
+		"browser": true,
+		"es6": true
+	},
+	"extends": ["react-app", "prettier"],
+	"parserOptions": {
+		"ecmaVersion": 2019
+	},
+	"plugins": ["react", "prettier"],
+	"rules": {
+		"prettier/prettier": ["error"]
+	}
+}
