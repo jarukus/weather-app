@@ -17,7 +17,6 @@ export const getCityWeather = ({ city, units = 'metric' }) => {
 			const resp = await api.get(`/weather?q=${city}&units=${units}`)
 			dispatch({ type: GET_WEATHER_SUCCESS, resp })
 		} catch (error) {
-			console.log(error)
 			dispatch({ type: GET_WEATHER_ERROR })
 		}
 	}
@@ -27,10 +26,8 @@ export const getDetailsCityWeather = ({ city, units = 'metric' }) => {
 	return async (dispatch) => {
 		try {
 			dispatch({ type: GET_DETAILS_WEATHER_REQUEST })
-			const { list } = await api.get(`/forecast/?q=${city}&units=${units}`)
-			if (list && list.length >= 1) {
-				dispatch({ type: GET_DETAILS_WEATHER_SUCCESS, list })
-			}
+			const resp = await api.get(`/forecast/?q=${city}&units=${units}`)
+			dispatch({ type: GET_DETAILS_WEATHER_SUCCESS, ...resp })
 		} catch (error) {
 			dispatch({ type: GET_DETAILS_WEATHER_ERROR })
 		}

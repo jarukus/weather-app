@@ -25,30 +25,30 @@ export default () => {
 
 	const dispatch = useDispatch()
 
-	const onChange = debounceDecorator((city) => {
-		city.length > 2 && dispatch(getCityWeather({ city }))
+	const onChange = debounceDecorator((payload) => {
+		const city = typeof payload === 'string' ? payload.trim() : ''
+		city.length > 2 && getData(city)
 	}, 500)
+
+	const getData = (data) => dispatch(getCityWeather({ city: data }))
 
 	return (
 		<>
 			<Col sm='12' className='mb-5'>
 				<h1>Weather App</h1>
 			</Col>
-			<Col sm='12' className='mb-5'>
-				<div className='d-flex position-relative'>
-					<Input
-						placeholder='Enter city name'
-						type='search'
-						onChange={(e) => onChange(e.target.value)}
-					/>
-					{isLoading && (
-						<div className='position-absolute justify-content-end d-flex w-100 mt-1 mr-1'>
-							<Spinner size='xl' color='primary' />
-						</div>
-					)}
+			<Col sm='12' className='mb-5 position-relative'>
+				<div className='d-flex justify-content-between'>
+					<h4 className='mb-3'>Enter city name</h4>
+					{isLoading && <Spinner size='xl' color='primary' />}
 				</div>
-				{last5Cities && last5Cities.length >= 1 && (
-					<ShowLast5Cities data={last5Cities} />
+				<Input
+					placeholder='City'
+					type='search'
+					onChange={(e) => onChange(e.target.value)}
+				/>
+				{last5Cities && last5Cities.length >= 2 && (
+					<ShowLast5Cities onChange={getData} data={last5Cities} />
 				)}
 			</Col>
 			<Col sm='12'>
@@ -59,11 +59,13 @@ export default () => {
 	)
 }
 
-function ShowLast5Cities({ data = [] }) {
+function ShowLast5Cities({ data = [], onChange }) {
 	let content = data.map((item, index) => {
 		return (
 			<React.Fragment key={index}>
-				<Link to={`/${item}`}>{item}</Link>{' '}
+				<Button color='link' onClick={() => onChange(item, 0)}>
+					{item}
+				</Button>{' '}
 			</React.Fragment>
 		)
 	})
@@ -107,16 +109,16 @@ function WeatherCard({ data = {} }) {
 					</thead>
 					<tbody>
 						<tr>
-							<th scope='row'>{humidity}%</th>
-							<td>{pressure} hpa</td>
-							<td>{temp.toFixed(0)}°C</td>
-							<td>{feels_like.toFixed(0)}°C</td>
-							<td>{wind.speed} km/h</td>
+							<td>{humidity}</td>
+							<td>{pressure}</td>
+							<td>{temp}</td>
+							<td>{feels_like}</td>
+							<td>{wind}</td>
 						</tr>
 					</tbody>
 				</Table>
 
-				<Link to={`/${name}`}>
+				<Link to={name}>
 					<Button>More details</Button>
 				</Link>
 			</CardBody>
