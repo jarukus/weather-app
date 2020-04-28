@@ -115,10 +115,6 @@ const plugins = () => {
 		}),
 	]
 
-	if (!isDev) {
-		base.push(new BundleAnalyzerPlugin())
-	}
-
 	return base
 }
 
