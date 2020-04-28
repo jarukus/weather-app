@@ -30,14 +30,6 @@ const optimization = () => {
 
 const filename = (ext) => (isDev ? `[name].${ext}` : `[name].[hash].${ext}`)
 
-const externals = () =>
-	!isDev
-		? {
-				react: 'react',
-				'react-dom': 'ReactDOM',
-		  }
-		: {}
-
 const cssLoaders = (extra) => {
 	const loaders = [
 		{
@@ -179,5 +171,4 @@ module.exports = {
 			},
 		],
 	},
-	externals: externals(),
 }
